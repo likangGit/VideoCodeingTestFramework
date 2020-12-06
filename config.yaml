@@ -1,0 +1,23 @@
+# 要处理的视频父路径
+inputFolder: 'data/'
+
+# 视频降帧参数
+frameRateStage:
+  ffmpeg:
+    rate: [1, 0.5, 0.25]
+    interval: 10
+    test: [True, 'a']
+
+# 视频绛分辨率参数
+resolutionStage: 
+  ffmpeg:
+    rate: [1, 0.5, 0.25]
+
+encodingStage:
+  HEVC:
+    Q: [20, 25, 30, 35, 40, 45]
+  VVC:
+    Q: [20, 25, 30, 35, 40, 45]
+  HLVC:
+    param: [1, 2, 3, 4, 5, 6] 
+
