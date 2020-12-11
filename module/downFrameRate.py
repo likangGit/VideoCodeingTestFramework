@@ -14,7 +14,7 @@ class BinaryFileProcess(Operator):
             os.makedirs(output)
         
         output = os.path.join(output,'0.yuv')
-        if self.interval == 1:
+        if abs(self.interval - 1) < 1e-5:
             shutil.copyfile(input, output)
         else:
             count = 0

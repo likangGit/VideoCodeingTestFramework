@@ -5,13 +5,15 @@ outputFolder: 'results/'
 downFrameRateStage:
   BinaryFileProcess:
     downRate: [1, 0.5, 0.25]
-    h: 2160
-    w: 3840
+    h: 2160 #输入YUV视频帧高度
+    w: 3840 #输入YUV视频帧宽度
 
 # 视频绛分辨率参数
-# resolutionStage: 
-#   ffmpeg:
-#     rate: [1, 0.5, 0.25]
+downResolutionStage: 
+  FFmpeg:
+    downRate: [1, 0.5, 0.25]
+    h: 2160 #输入YUV视频帧高度
+    w: 3840 #输入YUV视频帧宽度
 
 # encodingStage:
 #   HEVC:
