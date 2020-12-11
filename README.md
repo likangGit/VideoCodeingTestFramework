@@ -1,4 +1,4 @@
-# Video Coding Testing Framework
+# Video Coding Test Framework
 
 To test some video coding method, We design this framework.  
 

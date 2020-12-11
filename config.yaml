@@ -2,15 +2,16 @@
 inputFolder: 'data/'
 outputFolder: 'results/'
 # 视频降帧参数
-frameRateStage:
-  ffmpeg:
-    rate: [1, 0.5, 0.25]
-    interval: 10
+downFrameRateStage:
+  BinaryFileProcess:
+    downRate: [1, 0.5, 0.25]
+    h: 2160
+    w: 3840
 
 # 视频绛分辨率参数
-resolutionStage: 
-  ffmpeg:
-    rate: [1, 0.5, 0.25]
+# resolutionStage: 
+#   ffmpeg:
+#     rate: [1, 0.5, 0.25]
 
 # encodingStage:
 #   HEVC:
