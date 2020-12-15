@@ -1,5 +1,6 @@
 
 import os
+import re
 from itertools import product
 import multiprocessing
 from multiprocessing import cpu_count
@@ -11,12 +12,27 @@ class Operator(ABC):
     def operate(input_dir, output_root):
         pass
 
+    def extractParameters(self, filename):
+        filename = os.path.basename(filename)
+        searchObj = re.match(r'\D*(\d+)\D{1}(\d+)\D+(\d+\.{0,1}\d*)fps.*', filename)
+        assert searchObj, 'file name is invalid:{}'.format(filename)
+        w = searchObj.group(1)
+        h = searchObj.group(2)
+        fps = searchObj.group(3)
+        return int(w), int(h), float(fps)
+        
+    def generateFileName(self, w, h, fps):
+        return '{}x{}_{}fps.yuv'.format(w,h,fps)
+
 REGISTER = {}
 def FUNCTION_REGISTER(stageName, methodName, methodClass, useMultiProcessing=True):
     if stageName in REGISTER:
         REGISTER[stageName].update({methodName:{'class': methodClass, 'useMP':useMultiProcessing} })
     else:
         REGISTER.update({stageName:{methodName: {'class':methodClass, 'useMP':useMultiProcessing} } })
+
+
+
 
 def parseParameters(inputs, parameters):
     pks, pvs = ['input'], [inputs,]

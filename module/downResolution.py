@@ -2,22 +2,25 @@ import os
 import shutil
 from .core import FUNCTION_REGISTER, Operator
 class FFmpeg(Operator):
-    def __init__(self, downRate, h, w):
+    def __init__(self, downRate):
         super(FFmpeg, self).__init__()
         self.downRate = downRate
-        self.h = h
-        self.w = w
 
     def operate(self, input, output):
         print('FFmpeg start:{}...'.format(output))
         if not os.path.exists(output):
             os.makedirs(output)
-        output = os.path.join(output,'0.yuv')
+        sr_w, sr_h, fps = self.extractParameters(input)
+        print(sr_w,sr_h,fps)
+        w = int(sr_w * self.downRate)
+        h = int(sr_h * self.downRate)
+        newFileName = self.generateFileName(w,h,fps)
+        output = os.path.join(output, newFileName)
         if abs(self.downRate - 1) < 1e-5:
             shutil.copy(input, output)
         else:
             cmd = 'ffmpeg -s {}x{} -i {} -vf scale={}:-1 {} '.format(
-                self.w, self.h, input, int(self.w * self.downRate), output)
+                sr_w, sr_h, input, w, output)
             os.system(cmd)
         print('FFmpeg finish:{}'.format(output))
         return output
