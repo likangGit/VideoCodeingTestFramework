@@ -21,8 +21,8 @@ class Operator(ABC):
         fps = searchObj.group(3)
         return int(w), int(h), float(fps)
         
-    def generateFileName(self, w, h, fps):
-        return '{}x{}_{}fps.yuv'.format(w,h,fps)
+    def generateFileName(self, w, h, fps, fmt='yuv'):
+        return '{}x{}_{}fps.{}'.format(w,h,fps, fmt)
 
 REGISTER = {}
 def FUNCTION_REGISTER(stageName, methodName, methodClass, useMultiProcessing=True):

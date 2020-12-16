@@ -11,7 +11,6 @@ class FFmpeg(Operator):
         if not os.path.exists(output):
             os.makedirs(output)
         sr_w, sr_h, fps = self.extractParameters(input)
-        print(sr_w,sr_h,fps)
         w = int(sr_w * self.downRate)
         h = int(sr_h * self.downRate)
         newFileName = self.generateFileName(w,h,fps)
