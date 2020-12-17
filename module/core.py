@@ -56,12 +56,14 @@ def Exec(config):
         stage_outputs = []
         # method traversal
         for methodName, methodParams in stageV.items():
+            print('------{}-------'.format(methodName))
             methodParams = parseParameters(inputs, methodParams)
             methodClass = stage[methodName]['class']
             methodUseMP = stage[methodName]['useMP']
             #每个method使用线程池，不清楚线程是close是否还能再open，所以每次重新申请
             pool = multiprocessing.Pool(processes=cpu_count())
             method_outputs = []
+            already_outputs = []
             for param in methodParams:
                 print("parameters:",param)
                 input_file = param.pop('input')
@@ -75,7 +77,19 @@ def Exec(config):
                     output_path = os.path.join(os.path.dirname(input_file), output_folder)
                 else:
                     output_path = os.path.join(output_root, os.path.basename(input_file), output_folder)
-          
+                #TODO: if output_path already has a file, we can skip this instance
+                if os.path.exists(output_path):
+                    fs = os.listdir(output_path)
+                    theFile = None
+                    for f in fs:
+                        f = os.path.join(output_path, f)
+                        if os.path.isfile(f):
+                            theFile = f
+                            break # there is only one file in this directory.
+                    if theFile:
+                        already_outputs.append(theFile)
+                        continue
+                
                 instance_op = methodClass(**param)
                 if methodUseMP:
                     method_outputs.append(pool.apply_async(instance_op.operate, args=(input_file, output_path)) )
@@ -83,7 +97,12 @@ def Exec(config):
                     method_outputs.append(instance_op.operate(input_file, output_path) )
             pool.close()
             pool.join()
+            if len(already_outputs) > 0:
+                print('---already processed, skip these---')
+                [print(item) for item in already_outputs]
             stage_outputs += [r.get() for r in method_outputs] if methodUseMP else method_outputs
+            stage_outputs += already_outputs
+            
         #update inputs when stage work is completed
         inputs = stage_outputs
 
