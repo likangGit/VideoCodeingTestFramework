@@ -17,12 +17,11 @@ class HEVC(Operator):
         if not os.path.exists(output):
             os.makedirs(output)
         w, h, fps = self.extractParameters(input)
-        newFileName = self.generateFileName(w,h,fps,'mp4')
-        output = os.path.join(output,newFileName)
+        tmp_output = os.path.join(output, 'tmp.h265')
         #ffmpeg -framerate 50.0 -s 960x540 -i 960x540_50.0fps.yuv -r 50.0 -vcodec libx265 -x265-params "keyint=10:min-keyint=5:crf=20:no-scenecut=1" -f hevc out.h265
         cmd = 'ffmpeg -s {}x{} -framerate {} -i {} -r {} -vcodec libx265 \
-            -x265-params keyint={}:min-keyint={}:crf={}:no-scenecut=1 {} -y'.format(
-            w, h, fps, input,fps, self.keyInterval, self.keyInterval, self.Q , output)
+            -x265-params keyint={}:min-keyint={}:crf={}:no-scenecut=1 -f hevc {} -y'.format(
+            w, h, fps, input,fps, self.keyInterval, self.keyInterval, self.Q , tmp_output)
         
         p = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding='utf-8')
         line_queue = deque(maxlen=2)
@@ -35,17 +34,24 @@ class HEVC(Operator):
         assert ('encoded' in inform) and ('frames in' in inform) and \
                 ('kb/s' in inform) and ('Avg QP' in inform), 'HEVC does not execuate correct'
         # write information in file name
-        obj = re.match(r'encoded .*\), (.+) kb/s, Avg QP:(.+)', inform)
+        obj = re.match(r'encoded (\d+) frames .+, Avg QP:(.+)', inform)
         if obj:
-            previous_name = output
-            bitrate, QP = obj.group(1), obj.group(2)
-            extended = '_{}kbs_{}AvgQP'.format(bitrate, QP)
-            name, ext = os.path.splitext(output)
-            name += (extended + ext)
-            output = name
-            os.rename(previous_name,output)
-
-        print('HEVC finish:{}'.format(output))
+            frames, QP = int(obj.group(1) ), float(obj.group(2) )
+            bpp = self.calculateBPP(tmp_output, w, h, frames)
+            newFileName = self.generateFileName(w,h,fps,bpp=round(bpp, 4), avgQP=QP)
+            output = os.path.join(output,newFileName)
+            cmd = 'ffmpeg -r {} -i {} -framerate {} {}'.format(fps, tmp_output,fps, output)
+            os.system(cmd)
+            os.remove(tmp_output)
+            print('HEVC finish:{}'.format(output))
+        else:
+            raise Exception('HEVC execuate faild:{}'.format(output))
         return output
+    
+    def calculateBPP(self, filename, w, h, frames):
+        sizeByte = os.path.getsize(filename)
+        bpp = sizeByte * 8 /(w * h * frames)
+        return bpp
+
 
 FUNCTION_REGISTER('encodingStage', 'HEVC', HEVC,True)

@@ -21,8 +21,14 @@ class Operator(ABC):
         fps = searchObj.group(3)
         return int(w), int(h), float(fps)
         
-    def generateFileName(self, w, h, fps, fmt='yuv'):
-        return '{}x{}_{}fps.{}'.format(w,h,fps, fmt)
+    def generateFileName(self, w, h, fps, fmt='yuv', bpp=None, avgQP=None):
+        filename = '{}x{}_{}fps'.format(w, h, fps)
+        if bpp is not None:
+            filename += '_{}bpp'.format(bpp)
+        if avgQP is not None:
+            filename += '_{}AvgQP'.format(avgQP)
+        filename += '.{}'.format(fmt)
+        return filename
 
 REGISTER = {}
 def FUNCTION_REGISTER(stageName, methodName, methodClass, useMultiProcessing=True):
