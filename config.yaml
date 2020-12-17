@@ -11,11 +11,10 @@ downResolutionStage:
   FFmpeg:
     downRate: [1, 0.5]
 
-# encodingStage:
-#   HEVC:
-#     Q: [20, 25, 30, 35, 40, 45]
-#     biterate: #单位为kbs
-#     keyInterval: 10
+encodingStage:
+  HEVC:
+    Q: [20,40]
+    keyInterval: 10
 #   VVC:
 #     Q: [20, 25, 30, 35, 40, 45]
 #   HLVC:

@@ -87,5 +87,6 @@ def Exec(config):
         #update inputs when stage work is completed
         inputs = stage_outputs
 
-        print(inputs)
+        print('---outputs:---')
+        [print(item) for item in inputs]
 

@@ -18,7 +18,7 @@ class FFmpeg(Operator):
         if abs(self.downRate - 1) < 1e-5:
             shutil.copy(input, output)
         else:
-            cmd = 'ffmpeg -s {}x{} -i {} -vf scale={}:-1 {} '.format(
+            cmd = 'ffmpeg -s {}x{} -i {} -vf scale={}:-1 {} -y'.format(
                 sr_w, sr_h, input, w, output)
             os.system(cmd)
         print('FFmpeg finish:{}'.format(output))
