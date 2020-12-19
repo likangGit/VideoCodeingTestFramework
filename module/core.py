@@ -38,8 +38,6 @@ def FUNCTION_REGISTER(stageName, methodName, methodClass, useMultiProcessing=Tru
         REGISTER.update({stageName:{methodName: {'class':methodClass, 'useMP':useMultiProcessing} } })
 
 
-
-
 def parseParameters(inputs, parameters):
     pks, pvs = ['input'], [inputs,]
     for pk, pv in parameters.items():
@@ -63,6 +61,8 @@ def Exec(config):
         # method traversal
         for methodName, methodParams in stageV.items():
             print('------{}-------'.format(methodName))
+            if methodParams == 'NoParams':
+                methodParams = {}
             methodParams = parseParameters(inputs, methodParams)
             methodClass = stage[methodName]['class']
             methodUseMP = stage[methodName]['useMP']
@@ -73,6 +73,7 @@ def Exec(config):
             for param in methodParams:
                 print("parameters:",param)
                 input_file = param.pop('input')
+                    
                 # generate output file name
                 output_folder = '_'.join([stageName, methodName])+'_'
                 for pk,pv in param.items():

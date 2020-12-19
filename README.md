@@ -1,7 +1,18 @@
 # Video Coding Test Framework
 
 To test some video coding method, We design this framework.  
-
+## install
+1. `git clone --recursive https://github.com/likangGit/VideoPhotoRepair.git`
+2. run `install.sh`
+3. download model_weights and put it into 'module/3rdparty/VideophotoRepair/'：[百度云盘](https://pan.baidu.com/s/1GX13NFvkSmGtk93JO0y3Mw) 提取码:mw7y  
+    ```shell
+    VideoPhotoRepair/
+    ├── DAIN
+    ├── data
+    ├── DeepRemaster
+    ├── model_weights
+    └── USRNet
+    ```
 ## Run
 1. modify "config.yaml"  
    **note:** the order of stage means the order of execution. If you want to change order of execution, you can just exchange the order of stage in 'config.yaml'.  
