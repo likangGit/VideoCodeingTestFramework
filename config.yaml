@@ -4,16 +4,16 @@ outputFolder: 'results/'
 # 视频降帧参数
 downFrameRateStage:
   BinaryFileProcess:
-    downRate: [1, 0.5]
+    downRate: [0.5]
 
 # 视频绛分辨率参数
 downResolutionStage: 
   FFmpeg:
-    downRate: [1, 0.5]
+    downRate: [0.5]
 
 encodingStage:
   HEVC:
-    Q: [20,40]
+    Q: [20]
     keyInterval: 10
 #   VVC:
 #     Q: [20, 25, 30, 35, 40, 45]
@@ -22,4 +22,7 @@ encodingStage:
 
 upResolutionStage:
   USR: 'NoParams'
+
+# upFrameRateStage:
+#   DAIN: 'NoParams'
 

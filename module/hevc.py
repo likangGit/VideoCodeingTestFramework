@@ -20,7 +20,7 @@ class HEVC(Operator):
         tmp_output = os.path.join(output, 'tmp.h265')
         #ffmpeg -framerate 50.0 -s 960x540 -i 960x540_50.0fps.yuv -r 50.0 -vcodec libx265 -x265-params "keyint=10:min-keyint=5:crf=20:no-scenecut=1" -f hevc out.h265
         cmd = 'ffmpeg -s {}x{} -framerate {} -i {} -r {} -vcodec libx265 \
-            -x265-params keyint={}:min-keyint={}:crf={}:no-scenecut=1 -f hevc {} -y'.format(
+            -x265-params keyint={}:min-keyint={}:crf={}:no-scenecut=1 -f hevc {} -y -hide_banner'.format(
             w, h, fps, input,fps, self.keyInterval, self.keyInterval, self.Q , tmp_output)
         
         p = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding='utf-8')
@@ -40,7 +40,7 @@ class HEVC(Operator):
             bpp = self.calculateBPP(tmp_output, w, h, frames)
             newFileName = self.generateFileName(w,h,fps,bpp=round(bpp, 4), avgQP=QP)
             output = os.path.join(output,newFileName)
-            cmd = 'ffmpeg -framerate {} -i {} {}'.format(fps, tmp_output, output)
+            cmd = 'ffmpeg -framerate {} -i {} {} -hide_banner'.format(fps, tmp_output, output)
             os.system(cmd)
             os.remove(tmp_output)
             print('HEVC finish:{}'.format(output))

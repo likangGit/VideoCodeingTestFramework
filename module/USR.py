@@ -27,9 +27,7 @@ class USR(Operator):
         obj = re.match(r'.*/downResolutionStage_FFmpeg_downRate_(.+)/enc.*', input)
         if obj:
             para = obj.group(1)
-            print('test---------------:',para)
             up_rate = 1/float(para)
-            print('test-------------------:',int(up_rate))
         else:
             raise Exception('USR intput valid:{}'.format(input))
 
@@ -37,12 +35,13 @@ class USR(Operator):
             os.path.dirname(__file__), os.path.abspath(tmp_folder), int(up_rate) )
       
         os.system(cmd)
-        # # convert png to yuv
-        # newFileName = self.generateFileName(int(w*up_rate), int(h*up_rate), fps)
-        # output = os.path.join(output, newFileName)
-        # cmd = 'ffmpeg -i {}/3rdparty/VideoPhotoRepair/results/usr/%d.png {}'.format(os.path.dirname(__file__), output)
-        # os.system(cmd)       
-        # shutil.rmtree(tmp_folder)
+        # convert png to yuv
+        newFileName = self.generateFileName(int(w*up_rate), int(h*up_rate), fps)
+        output = os.path.join(output, newFileName)
+        cmd = 'ffmpeg -i {}/3rdparty/VideoPhotoRepair/results/usr/%d.png -pix_fmt yuv420p {} -hide_banner'.format(
+            os.path.dirname(__file__), output)
+        os.system(cmd)       
+        shutil.rmtree(tmp_folder)
         return output
 
 
