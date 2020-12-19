@@ -23,6 +23,6 @@ encodingStage:
 upResolutionStage:
   USR: 'NoParams'
 
-# upFrameRateStage:
-#   DAIN: 'NoParams'
+upFrameRateStage:
+  DAIN: 'NoParams'
 
