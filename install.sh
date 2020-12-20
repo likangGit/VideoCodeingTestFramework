@@ -3,6 +3,7 @@ workdir=$(cd $(dirname $0); pwd)
 
 #1.  ffmpeg
 sudo apt install ffmpeg -y
+sudo apt install graphviz -y
 #2. create env
 conda env create -f env.yaml
 #3. build package of DAIN

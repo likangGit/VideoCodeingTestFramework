@@ -87,4 +87,4 @@ class PSNR(Operator):
         ref_file = glob(os.path.join(ref_path, '*.yuv'))[0]
         return ref_file
 
-FUNCTION_REGISTER('analyzerStage', 'PSNR', PSNR,False)
+FUNCTION_REGISTER('analyzerStage', 'PSNR', PSNR,True)

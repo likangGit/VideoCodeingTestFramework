@@ -16,7 +16,7 @@ class FFmpeg(Operator):
         newFileName = self.generateFileName(w,h,fps)
         output = os.path.join(output, newFileName)
         if abs(self.downRate - 1) < 1e-5:
-            shutil.copy(input, output)
+            os.symlink(os.path.abspath(input), output)
         else:
             cmd = 'ffmpeg -s {}x{} -i {} -vf scale={}:-1 {} -y -hide_banner'.format(
                 sr_w, sr_h, input, w, output)

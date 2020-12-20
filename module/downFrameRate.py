@@ -18,7 +18,7 @@ class BinaryFileProcess(Operator):
 
         bytePreFrame = h*w * 3 // 2
         if abs(self.interval - 1) < 1e-5:
-            shutil.copyfile(input, output)
+            os.symlink(os.path.abspath(input), output)
         else:
             count = 0
             writer = open(output, 'wb')

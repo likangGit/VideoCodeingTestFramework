@@ -54,7 +54,7 @@ def inputStage(input_dir, output_dir):
     for i in inputs:
         target_path = os.path.join(output_dir, i)
         if not os.path.exists(target_path):
-            os.mkdir(target_path)
+            os.makedirs(target_path)
         src_file = os.path.abspath(os.path.join(input_dir, i) )
         target_file = os.path.join(target_path, i)
         if not os.path.exists(target_file):
@@ -63,7 +63,8 @@ def inputStage(input_dir, output_dir):
     return outputs
 
 def Exec(config):
-    
+    vrStage = config.pop('visualizationResultStage')
+
     input_dir = config.pop('inputFolder')
     output_root = config.pop('outputFolder')
     inputs = inputStage(input_dir, output_root)
@@ -132,4 +133,12 @@ def Exec(config):
         for item in inputs:
             assert os.path.isfile(item), 'output should be a file:{}'.format(item)
             print(item)
+    print('------------------visualizationResultStage---------------------')
+    for methodName, methodParams  in vrStage.items():
+        print('------{}------'.format(methodName))
+        if 'NoParams' ==  methodParams:
+            methodParams = {}
+        instance = REGISTER['visualizationResultStage'][methodName]['class'](**methodParams)
+        output = os.path.join(output_root, methodName)
+        instance.operate(inputs, output, output_root)
 

@@ -4,12 +4,12 @@ outputFolder: 'results/'
 # 视频降帧参数
 downFrameRateStage:
   BinaryFileProcess:
-    downRate: [0.5]
+    downRate: [1, 0.5]
 
 # 视频绛分辨率参数
 downResolutionStage: 
   FFmpeg:
-    downRate: [0.5]
+    downRate: [1, 0.5]
 
 encodingStage:
   HEVC:
@@ -32,7 +32,10 @@ analyzerStage1:
 
 upFrameRateStage:
   DAIN: 'NoParams'
-  
+
 analyzerStage2:
   PSNR:
     useDataType: 'YUV'
+
+visualizationResultStage:
+  Flow: 'NoParams'
