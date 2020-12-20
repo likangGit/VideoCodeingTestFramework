@@ -19,10 +19,20 @@ encodingStage:
 #     Q: [20, 25, 30, 35, 40, 45]
 #   HLVC:
 #     param: [1, 2, 3, 4, 5, 6] 
+analyzerStage0:
+  PSNR:
+    useDataType: 'YUV'
 
 upResolutionStage:
   USR: 'NoParams'
 
+analyzerStage1:
+  PSNR:
+    useDataType: 'YUV'
+
 upFrameRateStage:
   DAIN: 'NoParams'
-
+  
+analyzerStage2:
+  PSNR:
+    useDataType: 'YUV'

@@ -21,12 +21,14 @@ class Operator(ABC):
         fps = searchObj.group(3)
         return int(w), int(h), float(fps)
         
-    def generateFileName(self, w, h, fps, fmt='yuv', bpp=None, avgQP=None):
+    def generateFileName(self, w, h, fps, fmt='yuv', bpp=None, avgQP=None,PSNR=None):
         filename = '{}x{}_{}fps'.format(w, h, fps)
         if bpp is not None:
             filename += '_{}bpp'.format(bpp)
         if avgQP is not None:
             filename += '_{}AvgQP'.format(avgQP)
+        if PSNR is not None:
+            filename += '_{}PSNR'.format(PSNR)
         filename += '.{}'.format(fmt)
         return filename
 
@@ -46,17 +48,33 @@ def parseParameters(inputs, parameters):
     pvs = list(product(*pvs) )
     return [dict(zip(pks, pv)) for pv in pvs]
 
+def inputStage(input_dir, output_dir):
+    inputs = os.listdir(input_dir)
+    outputs = []
+    for i in inputs:
+        target_path = os.path.join(output_dir, i)
+        if not os.path.exists(target_path):
+            os.mkdir(target_path)
+        src_file = os.path.abspath(os.path.join(input_dir, i) )
+        target_file = os.path.join(target_path, i)
+        if not os.path.exists(target_file):
+            os.symlink(src_file,  target_file)
+        outputs.append(target_file)
+    return outputs
+
 def Exec(config):
     
     input_dir = config.pop('inputFolder')
     output_root = config.pop('outputFolder')
-    inputs = glob(os.path.join(input_dir,'*'))
+    inputs = inputStage(input_dir, output_root)
     # stage traversal
     for stageName, stageV in config.items():
         print('---------------{}-----------------'.format(stageName))
-        assert stageName in REGISTER, '"{}" not be registed'.format(stageName)
+
+        stageKey = 'analyzerStage' if 'analyzerStage' in stageName else stageName
+        assert stageKey in REGISTER, '"{}" not be registed'.format(stageName)
+        stage = REGISTER[stageKey]
         assert len(inputs)>0, 'No input'
-        stage = REGISTER[stageName]
         stage_outputs = []
         # method traversal
         for methodName, methodParams in stageV.items():
@@ -80,10 +98,7 @@ def Exec(config):
                     output_folder += '_'.join([pk, str(pv)])+'_'
                 output_folder = output_folder[:-1]
 
-                if output_root in input_file: # 特殊处理results文件夹外输入的情况，即非中间结果作为输入的情况
-                    output_path = os.path.join(os.path.dirname(input_file), output_folder)
-                else:
-                    output_path = os.path.join(output_root, os.path.basename(input_file), output_folder)
+                output_path = os.path.join(os.path.dirname(input_file), output_folder)
                 #TODO: if output_path already has a file, we can skip this instance
                 if os.path.exists(output_path):
                     fs = os.listdir(output_path)
@@ -114,5 +129,7 @@ def Exec(config):
         inputs = stage_outputs
 
         print('---outputs:---')
-        [print(item) for item in inputs]
+        for item in inputs:
+            assert os.path.isfile(item), 'output should be a file:{}'.format(item)
+            print(item)
 
