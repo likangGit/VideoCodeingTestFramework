@@ -1,6 +1,49 @@
 # Video Coding Test Framework
 
-To test some video coding method, We design this framework.  
+To test some video coding method, We design this framework. The result is as below:
+![result](doc/graph.png) 
+while the config file is as follows:
+```yaml
+# 要处理的视频父路径
+inputFolder: 'data/'
+outputFolder: 'results/'
+# 视频降帧参数
+downFrameRateStage:
+  BinaryFileProcess:
+    downRate: [1, 0.5]
+
+# 视频绛分辨率参数
+downResolutionStage: 
+  FFmpeg:
+    downRate: [1, 0.5]
+
+encodingStage:
+  HEVC:
+    Q: [20]
+    keyInterval: 10
+    
+analyzerStage0:
+  PSNR:
+    useDataType: 'YUV'
+
+upResolutionStage:
+  USR: 'NoParams'
+
+analyzerStage1:
+  PSNR:
+    useDataType: 'YUV'
+
+upFrameRateStage:
+  DAIN: 'NoParams'
+
+analyzerStage2:
+  PSNR:
+    useDataType: 'YUV'
+
+visualizationResultStage:
+  Flow: 'NoParams'
+
+```
 ## install
 1. `git clone --recursive https://github.com/likangGit/VideoPhotoRepair.git`
 2. run `install.sh`
