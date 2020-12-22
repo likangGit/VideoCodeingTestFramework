@@ -57,15 +57,21 @@ class PSNR(Operator):
     def calculatePSNR(self, input, reference, size):
         inputYUVs = VideoCaptureYUV(input, size)
         referenceYUVs = VideoCaptureYUV(reference, size)
+        print('ref:{}'.format(reference))
         psnr_list = []
+        count = 0
         while True:
+            print('\rprocessing frame:{}'.format(count),end='')
+            count += 1
             if self.useDataType == 'YUV':
                 retSrc, imgSrc = inputYUVs.read_raw()
                 retRef, imgRef = referenceYUVs.read_raw() 
             else:
                 retSrc, imgSrc = inputYUVs.read()
-                retRef, imgRef = referenceYUVs.read() 
-            if not (retSrc and retRef):
+                retRef, imgRef = referenceYUVs.read()
+            if retSrc != retRef:
+                raise Exception('two file has different frames')
+            if not retSrc:
                 break
             psnr_list.append(cv2.PSNR(imgSrc, imgRef) )
         return np.mean(psnr_list)

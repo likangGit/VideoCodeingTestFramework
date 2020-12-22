@@ -34,11 +34,11 @@ class HEVC(Operator):
         assert ('encoded' in inform) and ('frames in' in inform) and \
                 ('kb/s' in inform) and ('Avg QP' in inform), 'HEVC does not execuate correct'
         # transform h265 to yuv, calculate BPP and write it in file name
-        obj = re.match(r'encoded (\d+) frames .+, Avg QP:(.+)', inform)
+        obj = re.match(r'encoded (\d+) frames .*\), (.+) kb/s, Avg QP:(.+)', inform)
         if obj:
-            frames, QP = int(obj.group(1) ), float(obj.group(2) )
+            frames, kbps, QP = int(obj.group(1) ), obj.group(2), float(obj.group(3))
             bpp = self.calculateBPP(tmp_output, w, h, frames)
-            newFileName = self.generateFileName(w,h,fps,bpp=round(bpp, 4), avgQP=QP)
+            newFileName = self.generateFileName(w,h,fps,bpp=round(bpp, 4), avgQP=QP, kbps=kbps)
             output = os.path.join(output,newFileName)
             cmd = 'ffmpeg -framerate {} -i {} {} -hide_banner'.format(fps, tmp_output, output)
             os.system(cmd)

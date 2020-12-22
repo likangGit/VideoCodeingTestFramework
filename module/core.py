@@ -21,10 +21,12 @@ class Operator(ABC):
         fps = searchObj.group(3)
         return int(w), int(h), float(fps)
         
-    def generateFileName(self, w, h, fps, fmt='yuv', bpp=None, avgQP=None,PSNR=None):
+    def generateFileName(self, w, h, fps, fmt='yuv', bpp=None, avgQP=None,PSNR=None, kbps=None):
         filename = '{}x{}_{}fps'.format(w, h, fps)
         if bpp is not None:
             filename += '_{}bpp'.format(bpp)
+        if kbps is not None:
+            filename += '_{}kbps'.format(kbps)
         if avgQP is not None:
             filename += '_{}AvgQP'.format(avgQP)
         if PSNR is not None:
@@ -48,26 +50,23 @@ def parseParameters(inputs, parameters):
     pvs = list(product(*pvs) )
     return [dict(zip(pks, pv)) for pv in pvs]
 
-def inputStage(input_dir, output_dir):
-    inputs = os.listdir(input_dir)
-    outputs = []
-    for i in inputs:
-        target_path = os.path.join(output_dir, i)
-        if not os.path.exists(target_path):
-            os.makedirs(target_path)
-        src_file = os.path.abspath(os.path.join(input_dir, i) )
-        target_file = os.path.join(target_path, i)
-        if not os.path.exists(target_file):
-            os.symlink(src_file,  target_file)
-        outputs.append(target_file)
-    return outputs
+def inputStage(input, output_dir):
+    assert os.path.exists(input), 'No such file:{}'.format(input)
+    target_path = os.path.join(output_dir, os.path.basename(input))
+    if not os.path.exists(target_path):
+        os.makedirs(target_path)
+    src_file = os.path.abspath(input)
+    target_file = os.path.join(target_path, os.path.basename(input))
+    if not os.path.exists(target_file):
+        os.symlink(src_file,  target_file)
+    return [target_file,]
 
 def Exec(config):
     vrStage = config.pop('visualizationResultStage')
 
-    input_dir = config.pop('inputFolder')
+    first_input = config.pop('input')
     output_root = config.pop('outputFolder')
-    inputs = inputStage(input_dir, output_root)
+    inputs = inputStage(first_input, output_root)
     # stage traversal
     for stageName, stageV in config.items():
         print('---------------{}-----------------'.format(stageName))
@@ -139,6 +138,6 @@ def Exec(config):
         if 'NoParams' ==  methodParams:
             methodParams = {}
         instance = REGISTER['visualizationResultStage'][methodName]['class'](**methodParams)
-        output = os.path.join(output_root, methodName)
+        output = os.path.join(output_root, os.path.basename(first_input), methodName)
         instance.operate(inputs, output, output_root)
 

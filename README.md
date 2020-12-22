@@ -5,7 +5,7 @@ To test some video coding method, We design this framework. The result is as bel
 while the config file is as follows:
 ```yaml
 # 要处理的视频父路径
-inputFolder: 'data/'
+input: 'data/640x480_50fps.yuv'
 outputFolder: 'results/'
 # 视频降帧参数
 downFrameRateStage:
@@ -21,7 +21,7 @@ encodingStage:
   HEVC:
     Q: [20]
     keyInterval: 10
-    
+
 analyzerStage0:
   PSNR:
     useDataType: 'YUV'

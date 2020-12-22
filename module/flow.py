@@ -26,9 +26,11 @@ class Flow(Operator):
                 break
         color = self.scalarMap.to_rgba(idx)
         return color
-    def draw_graph(self, graph, output):
+    def draw_graph(self, graph, output, numInputs):
         # draw graph with labels
-        plt.rcParams['figure.figsize'] = (20, 10)
+        r = numInputs/4
+        w,h = max(20, r*20), max(5, r*5)
+        plt.rcParams['figure.figsize'] = (w, h)
         p = nx.nx_pydot.to_pydot(graph)
         p.write_dot(os.path.join(os.path.dirname(output), 'flow.dot'))
         pos = graphviz_layout(graph, prog='dot')
@@ -51,7 +53,7 @@ class Flow(Operator):
         plt.subplots_adjust(top=1, bottom=0, right=1, left=0,hspace=0, wspace=0)
         proxies = [Line2D([0,1], [0,1], color=self.scalarMap.to_rgba(i), lw=5) for i in range(len(self.edge_type_list))]
         plt.legend(proxies, self.edge_type_list)
-        plt.savefig(output,dpi=300)
+        plt.savefig(output,dpi=200)
 
     def operate(self, inputs, output, output_root):
         print('Flow start:{}...'.format(output))
@@ -87,15 +89,17 @@ class Flow(Operator):
                 if not file_node in node_dict:
                     node_dict.update({file_node:count})
                     color = self.stageType2Color(f)
-                    graph.add_node(node_dict[file_node], desc=os.path.basename(file_node), node_color=color)
+                    desc = os.path.basename(file_node)
+                    desc = desc.replace('fps_','fps\n_') if 'bpp' in desc else desc
+                    graph.add_node(node_dict[file_node], desc=desc, node_color=color)
                     count += 1
                     pre_file_list = glob(os.path.join(pre_path, '*.yuv') )
                     if len(pre_file_list) > 0:
                         pre_file_node = pre_file_list[0]
                         color = self.stageType2Color(f)
                         graph.add_edge(node_dict[pre_file_node], node_dict[file_node], name = f, edge_color=color)
-        self.draw_graph(graph, output)
+        self.draw_graph(graph, output, len(inputs))
         print('Flow finish: {}'.format(output))
-        return output
+        return graph
 
 FUNCTION_REGISTER('visualizationResultStage', 'Flow', Flow)
