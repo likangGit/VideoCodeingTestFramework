@@ -1,6 +1,7 @@
 import os
 import re
 import shutil
+import yaml
 from glob import glob
 from matplotlib import pyplot as plt
 from .core import FUNCTION_REGISTER, Operator
@@ -12,7 +13,7 @@ class BppPSNR(Operator):
         print('BppPSNR start:{}...'.format(output))
         if not os.path.exists(output):
             os.makedirs(output)
-        output = os.path.join(output, 'line.png')
+        
         bpp_kbps_pattern = re.compile(r'.*_(\d+\.\d+)bpp_(\d+\.\d+)kbps.*')
         psnr_pattern = re.compile(r'.*_(\d+\.\d+)PSNR.yuv')
         bpp_list, kbps_list, psnr_list = [], [], []
@@ -36,20 +37,23 @@ class BppPSNR(Operator):
             if obj:
                 psnr = float(obj.group(1))
                 psnr_list.append(psnr)
+        save_dict = {'bpp_list':bpp_list, 'kbps_list':kbps_list, 'psnr_list':psnr_list}
+        with open(os.path.join(output, 'data.txt'), 'w') as f:
+            f.write(str(save_dict))
         fig, (ax1, ax2) = plt.subplots(1,2)
         ax1.plot(bpp_list, psnr_list)
         ax1.set_ylabel('PSNR/db')
         ax1.set_xlabel('bpp')
         ax1.grid()
         for x,y in zip(bpp_list, psnr_list):
-            ax1.text(x,y, '({},{})'.format(x,y), va='bottom', fontsize=10)
+            ax1.text(x,y, '({}, {})'.format(x,y), va='bottom', fontsize=10)
         ax2.plot(kbps_list, psnr_list)
         ax2.set_ylabel('PSNR/db')
         ax2.set_xlabel('kbps')
         ax2.grid()
         for x,y in zip(kbps_list, psnr_list):
-            ax2.text(x,y, '({},{})'.format(x,y), va='bottom', fontsize=10)
-        plt.savefig(output, dpi=200)           
+            ax2.text(x,y, '({}, {})'.format(x,y), va='bottom', fontsize=10)
+        plt.savefig(os.path.join(output, 'line.png'), dpi=200)           
        
         print('BppPSNR finish:{}'.format(output))
         return inputs
