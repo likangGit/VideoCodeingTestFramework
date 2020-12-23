@@ -1,5 +1,5 @@
-# 要处理的视频父路径
-inputFolder: 'data/'
+# 要处理的视频，文件名格则xx/xx_xx*xx_xxfps.yuv
+input: 'data/640x480_50fps.yuv'
 outputFolder: 'results/'
 # 视频降帧参数
 downFrameRateStage:
