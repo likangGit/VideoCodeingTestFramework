@@ -31,8 +31,9 @@ class BppPSNR(Operator):
                 bpp, kbps = float(obj.group(1) ), float(obj.group(2) )
                 bpp_list.append(bpp)
                 kbps_list.append(kbps)
-            psnr_path = os.path.join(path, folders[i+1])
-            psnr_file = os.path.basename(glob(psnr_path+'/*PSNR.yuv')[0])
+            # psnr_path = os.path.join(path, folders[i+1])
+            # psnr_file = os.path.basename(glob(psnr_path+'/*PSNR.yuv')[0])
+            psnr_file = os.path.basename(input)
             obj = psnr_pattern.match(psnr_file)
             if obj:
                 psnr = float(obj.group(1))
@@ -41,18 +42,20 @@ class BppPSNR(Operator):
         with open(os.path.join(output, 'data.txt'), 'w') as f:
             f.write(str(save_dict))
         fig, (ax1, ax2) = plt.subplots(1,2)
-        ax1.plot(bpp_list, psnr_list)
+        bpp_list, sorted_psnr_list = zip(*sorted(zip(bpp_list, psnr_list)))
+        ax1.plot(bpp_list, sorted_psnr_list)
         ax1.set_ylabel('PSNR/db')
         ax1.set_xlabel('bpp')
         ax1.grid()
-        for x,y in zip(bpp_list, psnr_list):
-            ax1.text(x,y, '({}, {})'.format(x,y), va='bottom', fontsize=10)
-        ax2.plot(kbps_list, psnr_list)
+        for x,y in zip(bpp_list, sorted_psnr_list):
+            ax1.text(x,y, '({}, {})'.format(x,y),va='bottom', fontsize=10)
+        kbps_list, sorted_psnr_list = zip(*sorted(zip(kbps_list, psnr_list)))
+        ax2.plot(kbps_list, sorted_psnr_list)
         ax2.set_ylabel('PSNR/db')
         ax2.set_xlabel('kbps')
         ax2.grid()
-        for x,y in zip(kbps_list, psnr_list):
-            ax2.text(x,y, '({}, {})'.format(x,y), va='bottom', fontsize=10)
+        for x,y in zip(kbps_list, sorted_psnr_list):
+            ax2.text(x,y, '({}, {})'.format(x,y),va='bottom', fontsize=10)
         plt.savefig(os.path.join(output, 'line.png'), dpi=200)           
        
         print('BppPSNR finish:{}'.format(output))

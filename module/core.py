@@ -14,7 +14,7 @@ class Operator(ABC):
 
     def extractParameters(self, filename):
         filename = os.path.basename(filename)
-        searchObj = re.match(r'\D*(\d+)\D{1}(\d+)\D+(\d+\.{0,1}\d*)fps.*', filename)
+        searchObj = re.match(r'.*?_?(\d+)\D{1}(\d+)\D+(\d+\.{0,1}\d*)fps.*', filename)
         assert searchObj, 'file name is invalid:{}'.format(filename)
         w = searchObj.group(1)
         h = searchObj.group(2)

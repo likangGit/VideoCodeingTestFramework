@@ -7,10 +7,11 @@ from .core import FUNCTION_REGISTER, Operator
 class HEVC(Operator):
     """reference：https://www.cnblogs.com/blackhumour2018/p/9427665.html
     """
-    def __init__(self, Q, keyInterval):
+    def __init__(self, Q, keyInterval, bppRef):
         super(HEVC, self).__init__()
         self.Q = int(Q)
         self.keyInterval = int(keyInterval)
+        self.bppRef = bppRef
 
     def operate(self, input, output):
         print('HEVC start:{}...'.format(output))
@@ -37,7 +38,16 @@ class HEVC(Operator):
         obj = re.match(r'encoded (\d+) frames .*\), (.+) kb/s, Avg QP:(.+)', inform)
         if obj:
             frames, kbps, QP = int(obj.group(1) ), obj.group(2), float(obj.group(3))
-            bpp = self.calculateBPP(tmp_output, w, h, frames)
+            if self.bppRef == 'predecessor':
+                bpp = self.calculateBPP(tmp_output, w, h, frames)
+            else:
+                folders = input.split('/')
+                wh_obj = re.match(r'.*?_?(\d+)\D{1}(\d+)_.*',folders[1])
+                
+                w_input, h_input = float(wh_obj.group(1) ), float(wh_obj.group(2) )
+                print(w_input, h_input)
+                frames = os.path.getsize(os.path.join(*folders[:2], folders[1]) )/(w_input*h_input*3/2)
+                bpp = self.calculateBPP(tmp_output, w_input, h_input, frames)
             newFileName = self.generateFileName(w,h,fps,bpp=round(bpp, 4), avgQP=QP, kbps=kbps)
             output = os.path.join(output,newFileName)
             cmd = 'ffmpeg -framerate {} -i {} {} -hide_banner'.format(fps, tmp_output, output)

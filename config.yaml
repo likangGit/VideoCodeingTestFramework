@@ -1,20 +1,21 @@
-# 要处理的视频，文件名格则xx/xx_xx*xx_xxfps.yuv
-input: 'data/640x480_50fps.yuv'
+# video name.it is should be like: xx/xxx_w*h_xxfps.yuv
+input: '/media/ryan/D/testVideo/FlowerKids_640x448_50fps.yuv'
 outputFolder: 'results/'
 # 视频降帧参数
 downFrameRateStage:
   BinaryFileProcess:
-    downRate: [1, 0.5]
+    downRate: [1, 0.5, 0.25]
 
 # 视频绛分辨率参数
 downResolutionStage: 
   FFmpeg:
-    downRate: [1, 0.5]
+    downRate: [1]
 
 encodingStage:
   HEVC:
-    Q: [20]
+    Q: [30]
     keyInterval: 10
+    bppRef: 'input' # 'predecessor'
 #   VVC:
 #     Q: [20, 25, 30, 35, 40, 45]
 #   HLVC:
@@ -39,3 +40,5 @@ analyzerStage2:
 
 visualizationResultStage:
   Flow: 'NoParams'
+  # This mathod always gets the last PSNR value
+  BppPSNR: 'NoParams'
