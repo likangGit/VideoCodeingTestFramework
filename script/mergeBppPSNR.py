@@ -1,14 +1,20 @@
 import re
 from glob import glob
 from matplotlib import pyplot as plt
-label_file = {'downFrameRate':'results/FlowerKids_640x448_50fps.yuv/BppPSNR_downFr/data.txt',
-                'downResolution':'results/FlowerKids_640x448_50fps.yuv/BppPSNR_downReso/data.txt'}
+label_file = {
+    # 'downFrameRate':'results/RaceNight_640x448_50fps_8bit.yuv/downFr1_0.5_0.25_0.125/BppPSNR/data.txt',
+    # 'downResolution':'results/RaceNight_640x448_50fps_8bit.yuv/downReso1_0.5_0.25/BppPSNR/data.txt',
+    'H_Q_640x448':'results/RaceNight_640x448_50fps_8bit.yuv/q30_40_50/BppPSNR/data.txt',
+    'L_Q_640x448':'results/FlowerKids_640x448_50fps.yuv/BppPSNR_q/data.txt',
+    # 'Q_3840x2160':'results/FlowerKids_3840x2160_50fps_8bit.yuv/BppPSNR/data.txt',
+    # 'Q_1920x1080':'results/FlowerKids_1920x1080_50fps_8bit.yuv/BppPSNR/data.txt'
+    }
 # label_file = {'3840x2160':'results/FlowerKids_3840x2160_50fps_8bit.yuv/BppPSNR/data.txt',
 #                 '1920x1080':'results/FlowerKids_1920x1080_50fps_8bit.yuv/BppPSNR/data.txt'} 
 fig, (ax1, ax2) = plt.subplots(1,2,figsize=(20,5))
 ax1.grid(True)
 ax2.grid(True)
-line_type = ['-b','--r','-.b','-g','-.k']
+line_type = ['s-b','v--g','o-.r','d-m','h-.k']
 for (label,data), lt in zip(label_file.items(), line_type):
 
     with open(data, 'r') as f:

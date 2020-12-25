@@ -60,7 +60,8 @@ visualizationResultStage:
 1. modify "config.yaml"  
    **note:** the order of stage means the order of execution. If you want to change order of execution, you can just exchange the order of stage in 'config.yaml'.  
    **note:** the method name below the stage name means what method you want to execute in this stage. You can use one or several methods in one stage. If you don not want to execute the method, you can just comment it.
-2. run command `python main.py`
+2. `conda activate VCtest`
+3. run command `python main.py`
    
 ## Develop
 The framework is designed to add modules in the form of plug-ins. You can add your own plugin by follwing the setps below:
