@@ -56,6 +56,15 @@ visualizationResultStage:
     ├── model_weights
     └── USRNet
     ```
+4. download model HLVC, unzip and put the folder "HLVC" into 'module/3rdparty/':
+   [Google Drive](https://drive.google.com/file/d/1QQWeJLAx7qPQiIKQDBv67tx16o3f7hEY/view?usp=sharing)
+   [百度云盘](https://pan.baidu.com/s/1UEwrXUsbK4jggRcbx9VFbQ) 提取码:sb8g
+    ```shell
+    3rdparty/
+    ├── VideoPhotoRepair
+    ├── HLVC
+    ```
+
 ## Run
 1. modify "config.yaml"  
    **note:** the order of stage means the order of execution. If you want to change order of execution, you can just exchange the order of stage in 'config.yaml'.  
