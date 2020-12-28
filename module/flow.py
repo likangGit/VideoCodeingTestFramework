@@ -48,8 +48,9 @@ class Flow(Operator):
         x_values, y_values = zip(*pos.values())
         x_max = max(x_values)
         x_min = min(x_values)
-        x_margin = (x_max - x_min)*0.25
-        plt.xlim(x_min-x_margin, x_max + x_margin)
+        if x_min != x_max:
+            x_margin = (x_max - x_min)*0.25
+            plt.xlim(x_min-x_margin, x_max + x_margin)
         plt.subplots_adjust(top=1, bottom=0, right=1, left=0,hspace=0, wspace=0)
         proxies = [Line2D([0,1], [0,1], color=self.scalarMap.to_rgba(i), lw=5) for i in range(len(self.edge_type_list))]
         plt.legend(proxies, self.edge_type_list)

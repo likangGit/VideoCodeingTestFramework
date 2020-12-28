@@ -45,7 +45,7 @@ class HEVC(Operator):
                 wh_obj = re.match(r'.*?_?(\d+)\D{1}(\d+)_.*',folders[1])
                 
                 w_input, h_input = float(wh_obj.group(1) ), float(wh_obj.group(2) )
-                print(w_input, h_input)
+                # print(w_input, h_input)
                 frames = os.path.getsize(os.path.join(*folders[:2], folders[1]) )/(w_input*h_input*3/2)
                 bpp = self.calculateBPP(tmp_output, w_input, h_input, frames)
             newFileName = self.generateFileName(w,h,fps,bpp=round(bpp, 4), avgQP=QP, kbps=kbps)

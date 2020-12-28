@@ -69,10 +69,10 @@ class PSNR(Operator):
             else:
                 retSrc, imgSrc = inputYUVs.read()
                 retRef, imgRef = referenceYUVs.read()
-            # if retSrc != retRef:
-            #     raise Exception('two file has different frames')
-            if retRef and (not retSrc)
-                raise Exception('input frames should be more than retRef')
+            if retSrc != retRef:
+                raise Exception('two file has different frames')
+            # if retRef and (not retSrc)
+            #     raise Exception('input frames should be more than retRef')
             if not retRef:
                 break
             psnr_list.append(cv2.PSNR(imgSrc, imgRef) )

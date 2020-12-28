@@ -41,6 +41,16 @@ class DAIN(Operator):
                 os.path.dirname(__file__), os.path.abspath(tmp_folder), int(up_rate), int(fps) )
             os.system(cmd)
 
+            # calculate source file frames
+            folders = input.split('/')
+            wh_obj = re.match(r'.*?_?(\d+)\D{1}(\d+)_.*',folders[1])
+            w_input, h_input = float(wh_obj.group(1) ), float(wh_obj.group(2) )
+            frames = os.path.getsize(os.path.join(*folders[:2], folders[1]) )/(w_input*h_input*3/2)
+            png_path = os.path.join(os.path.dirname(__file__), '3rdparty/VideoPhotoRepair/results/dain')
+            current_frames = len(os.listdir( png_path) )
+            for i in range(current_frames, int(frames), -1):
+                os.remove(os.path.join(png_path, '{}.png'.format(i) ))
+
             # convert png to yuv
             newFileName = self.generateFileName(w, h, fps*up_rate)
             output = os.path.join(output, newFileName)
