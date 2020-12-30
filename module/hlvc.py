@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import re
 from module.core import FUNCTION_REGISTER, Operator
 
 
@@ -18,6 +19,16 @@ class hlvc_dec(Operator):
         fps = int(fps)
         if (w % 16 != 0) or (h % 16 != 0):
             raise ValueError('Height and Width must be a mutiple of 16.')
+
+        #Recording w,h,frames of input
+        folders = input.split('/')
+        wh_obj = re.match(r'.*?_?(\d+)\D{1}(\d+)_.*', folders[1])
+        w_input, h_input = float(wh_obj.group(1)), float(wh_obj.group(2))
+        frames_input = os.path.getsize(os.path.join(*folders[:2], folders[1])) / (w_input * h_input * 3 / 2)
+        w_input=int(w_input)
+        h_input=int(h_input)
+        frames_input=int(frames_input)
+        # print(w_input, h_input, frames_input)
 
         #yuv to PNGs
         out_ab=os.getcwd()+'/'+output
@@ -50,7 +61,7 @@ class hlvc_dec(Operator):
 
         # HLVC decoding
         hlvc_pypath = 'module/3rdparty/HLVC'
-        cmd = 'python HLVC_video_fast.py --path {} --output {} --frame {} --mode PSNR --l {} '.format(png_path,out_ab,frame_count,lumda)
+        cmd = 'python HLVC_video_fast.py --path {} --output {} --frame {} --l {} --w {} --h {} --f_input {}'.format(png_path,out_ab,frame_count,lumda,w_input,h_input,frames_input)
         os.system('cd {};{}'.format(hlvc_pypath,cmd))
 
         #PSNR&bpp read,Clear
@@ -58,20 +69,16 @@ class hlvc_dec(Operator):
         f=open(recordtxt,'r', encoding='utf-8')
         msg=f.readline()
         if msg=='':
-            raise ValueError('PSNR and bpp value not found in txt. Check HLVC decoding process!')
+            raise ValueError('Bpp value not found in txt. Check HLVC decoding process!')
         f.close()
         #Clear message in txt
         f=open(recordtxt,'w', encoding='utf-8')
         f.close()
 
-        psnr1,bpp1=msg.split('_')
-        psnr1=np.around(float(psnr1),decimals=4)
-        bpp1=np.around(float(bpp1),decimals=4)
-
-        #Function: generateFileName(self, w, h, fps, fmt='yuv', bpp=None, avgQP=None,PSNR=None):
-        newFileName = self.generateFileName(w, h, fps,fmt='yuv', bpp=bpp1, avgQP=None,PSNR=psnr1)
-
-
+        #psnr1=np.around(float(psnr1),decimals=5)
+        bpp1=np.around(float(msg),decimals=5)
+        newFileName = self.generateFileName(w, h, fps, bpp=bpp1, avgQP=None, kbps=None)
+        
         #PNGs to YUV
         if not os.path.exists(out_ab):
             raise FileExistsError('Output path "{}" cannot find, check HLVC decoding!'.format(out_ab))
