@@ -1,3 +1,5 @@
 results/
 results_backup/
 __pycache__/
+.idea/
+.vscode/
