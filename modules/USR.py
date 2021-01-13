@@ -37,14 +37,14 @@ class USR(Operator):
             os.system(cmd)
 
             # use USR to super resolutioin
-            cmd = 'cd {}/3rdparty/VideoPhotoRepair;python main.py {} --operation usr --scale {} --clc'.format(
+            cmd = 'cd {}/thirdparty/VideoPhotoRepair;python main.py {} --operation usr --scale {} --clc'.format(
                 os.path.dirname(__file__), os.path.abspath(tmp_folder), int(up_rate) )
             os.system(cmd)
 
             # convert png to yuv
             newFileName = self.generateFileName(int(w*up_rate), int(h*up_rate), fps)
             output = os.path.join(output, newFileName)
-            cmd = 'ffmpeg -i {}/3rdparty/VideoPhotoRepair/results/usr/%d.png -pix_fmt yuv420p {} -hide_banner'.format(
+            cmd = 'ffmpeg -i {}/thirdparty/VideoPhotoRepair/results/usr/%d.png -pix_fmt yuv420p {} -hide_banner'.format(
                 os.path.dirname(__file__), output)
             os.system(cmd)       
             shutil.rmtree(tmp_folder)

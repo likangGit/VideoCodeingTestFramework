@@ -1,3 +1,4 @@
-[submodule "module/3rdparty/VideoPhotoRepair"]
-	path = module/3rdparty/VideoPhotoRepair
+
+[submodule "modules/thirdparty/VideoPhotoRepair"]
+	path = modules/thirdparty/VideoPhotoRepair
 	url = https://gitee.com/likangGit/VideoPhotoRepair.git

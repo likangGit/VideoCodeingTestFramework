@@ -13,7 +13,7 @@ class BppFID(Operator):
             os.makedirs(output)
         bpp_kbps_pattern = re.compile(r'.*_(\d+\.\d+)bpp_(\d+\.\d+)kbps.*')
         bpp_pattern = re.compile(r'.*_(\d+\.\d+)bpp*')
-        fid_pattern = re.compile(r'.*_(\d+\.\d+)FID.yuv')
+        fid_pattern = re.compile(r'.*_(-?\d+\.\d+)FID.yuv')
         bpp_list, kbps_list, fid_list = [], [], []
 
         for input in inputs:
@@ -45,7 +45,7 @@ class BppFID(Operator):
             obj = fid_pattern.match(fid_file)
             fid = float(obj.group(1))
             fid_list.append(fid)
-            
+
         save_dict = {'bpp_list':bpp_list, 'kbps_list':kbps_list, 'fid_list':fid_list}
         with open(os.path.join(output, 'data.txt'), 'w') as f:
             f.write(str(save_dict))

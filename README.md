@@ -47,7 +47,7 @@ visualizationResultStage:
 ## install
 1. `git clone --recursive https://github.com/likangGit/VideoPhotoRepair.git`
 2. run `install.sh`
-3. download model_weights and put it into 'module/3rdparty/VideophotoRepair/'：[百度云盘](https://pan.baidu.com/s/1GX13NFvkSmGtk93JO0y3Mw) 提取码:mw7y  
+3. download model_weights and put it into 'modules/thirdparty/VideophotoRepair/'：[百度云盘](https://pan.baidu.com/s/1GX13NFvkSmGtk93JO0y3Mw) 提取码:mw7y  
     ```shell
     VideoPhotoRepair/
     ├── DAIN
@@ -56,11 +56,11 @@ visualizationResultStage:
     ├── model_weights
     └── USRNet
     ```
-4. download model HLVC, unzip and put the folder "HLVC" into 'module/3rdparty/':
+4. download model HLVC, unzip and put the folder "HLVC" into 'modules/thirdparty/':
    [Google Drive](https://drive.google.com/file/d/1QQWeJLAx7qPQiIKQDBv67tx16o3f7hEY/view?usp=sharing)
    [百度云盘](https://pan.baidu.com/s/1UEwrXUsbK4jggRcbx9VFbQ) 提取码:sb8g
     ```shell
-    3rdparty/
+    thirdparty/
     ├── VideoPhotoRepair
     ├── HLVC
     ```
@@ -74,6 +74,6 @@ visualizationResultStage:
    
 ## Develop
 The framework is designed to add modules in the form of plug-ins. You can add your own plugin by follwing the setps below:
-1. create a python file in path "module/"
+1. create a python file in path "modules/"
 2. Write your own code by imitating the code in 'frame_rate.py' or 'ffmpeg_resolution.py' and add it to the new python file
 3. add config information in config.yaml according to the code you wrote.

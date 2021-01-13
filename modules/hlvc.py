@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import re
-from module.core import FUNCTION_REGISTER, Operator
+from modules.core import FUNCTION_REGISTER, Operator
 
 
 class hlvc_dec(Operator):
@@ -60,12 +60,12 @@ class hlvc_dec(Operator):
         assert (frame_count % 10 == 1)
 
         # HLVC decoding
-        hlvc_pypath = 'module/3rdparty/HLVC'
+        hlvc_pypath = 'modules/thirdparty/HLVC'
         cmd = 'python HLVC_video_fast.py --path {} --output {} --frame {} --l {} --w {} --h {} --f_input {}'.format(png_path,out_ab,frame_count,lumda,w_input,h_input,frames_input)
         os.system('cd {};{}'.format(hlvc_pypath,cmd))
 
         #PSNR&bpp read,Clear
-        recordtxt=os.getcwd()+'/module/3rdparty/HLVC/psnr_bpp.txt'
+        recordtxt=os.getcwd()+'/modules/thirdparty/HLVC/psnr_bpp.txt'
         f=open(recordtxt,'r', encoding='utf-8')
         msg=f.readline()
         if msg=='':

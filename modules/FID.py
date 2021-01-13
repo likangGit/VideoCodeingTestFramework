@@ -30,16 +30,6 @@ class FID(Operator):
             ref_fps, ref_w, ref_h, ref_file, tmp_ref_folder)
         os.system(cmd)
         # calculate FID
-        # cmd = 'cd {}/3rdparty/TTUR; python fid.py {} {} --gpu 0'.format(
-        #     os.path.dirname(__file__), os.path.abspath(tmp_input_folder), os.path.abspath(tmp_ref_folder) )
-        # p = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding='utf-8')
-        # while p.poll() is None:
-        #     line = p.stdout.readline().rstrip()
-        #     print(line)
-        # if 'FID' in line:
-        #     fid = float(line.replace('FID:','') )
-        # else:
-        #     raise Exception('FID execuate faild.')
         fid = calculate_fid_given_paths([os.path.abspath(tmp_input_folder), 
                                         os.path.abspath(tmp_ref_folder)], None, gpu='0')
         # create a soft link between input and output
@@ -55,7 +45,7 @@ class FID(Operator):
 
 FUNCTION_REGISTER('analyzerStage', 'FID', FID, False)
 
-#!/usr/bin/env python3
+# https://github.com/bioinf-jku/TTUR
 ''' Calculates the Frechet Inception Distance (FID) to evalulate GANs.
 
 The FID metric calculates the distance between two distributions of images.

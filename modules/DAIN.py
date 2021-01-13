@@ -37,7 +37,7 @@ class DAIN(Operator):
             os.system(cmd)
 
             # use DAIN to super resolutioin
-            cmd = 'cd {}/3rdparty/VideoPhotoRepair;python main.py {} --operation dain --multi {} --fps {} --clc'.format(
+            cmd = 'cd {}/thirdparty/VideoPhotoRepair;python main.py {} --operation dain --multi {} --fps {} --clc'.format(
                 os.path.dirname(__file__), os.path.abspath(tmp_folder), int(up_rate), int(fps) )
             os.system(cmd)
 
@@ -46,7 +46,7 @@ class DAIN(Operator):
             wh_obj = re.match(r'.*?_?(\d+)\D{1}(\d+)_.*',folders[1])
             w_input, h_input = float(wh_obj.group(1) ), float(wh_obj.group(2) )
             frames = os.path.getsize(os.path.join(*folders[:2], folders[1]) )/(w_input*h_input*3/2)
-            png_path = os.path.join(os.path.dirname(__file__), '3rdparty/VideoPhotoRepair/results/dain')
+            png_path = os.path.join(os.path.dirname(__file__), 'thirdparty/VideoPhotoRepair/results/dain')
             current_frames = len(os.listdir( png_path) )
             for i in range(current_frames, int(frames), -1):
                 os.remove(os.path.join(png_path, '{}.png'.format(i) ))
@@ -54,7 +54,7 @@ class DAIN(Operator):
             # convert png to yuv
             newFileName = self.generateFileName(w, h, fps*up_rate)
             output = os.path.join(output, newFileName)
-            cmd = 'ffmpeg -i {}/3rdparty/VideoPhotoRepair/results/dain/%d.png -pix_fmt yuv420p {} -hide_banner'.format(
+            cmd = 'ffmpeg -i {}/thirdparty/VideoPhotoRepair/results/dain/%d.png -pix_fmt yuv420p {} -hide_banner'.format(
                 os.path.dirname(__file__), output)
             os.system(cmd)       
             shutil.rmtree(tmp_folder)

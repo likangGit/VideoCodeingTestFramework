@@ -7,7 +7,7 @@ sudo apt install graphviz -y
 #2. create env
 conda env create -f env.yaml
 #3. build package of DAIN
-cd ${workdir}/module/3rdparty/VideoPhotoRepair/DAIN/my_package
+cd ${workdir}/modules/thirdparty/VideoPhotoRepair/DAIN/my_package
 cp build.sh build_tmp.sh
 sed -i "s/pytorch1.0.0/VCtest/g" build_tmp.sh
 output=`./build_tmp.sh`
