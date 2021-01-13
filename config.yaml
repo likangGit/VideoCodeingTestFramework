@@ -4,20 +4,19 @@ outputFolder: 'results/'
 # 视频降帧参数
 downFrameRateStage:
   BinaryFileProcess:
-    downRate: [1,]
+    downRate: [0.5]
 
 # 视频绛分辨率参数
 downResolutionStage: 
   FFmpeg:
-    downRate: [1,]
+    downRate: [0.5]
 
 encodingStage:
   HEVC:
-    Q: [20,30,40,50]
+    Q: [30]
     keyInterval: 10
     bppRef: 'input' # 'predecessor'
-  #  VVC:
-  #    Q: [20, 25, 30, 35, 40, 45]
+
   #  HLVC:
   #    lumda: [256,512,1024,2048]
 analyzerStage0:
@@ -35,10 +34,12 @@ upFrameRateStage:
   DAIN: 'NoParams'
 
 analyzerStage2:
-  PSNR:
-    useDataType: 'YUV'
+  # PSNR:
+  #   useDataType: 'YUV'
+  FID: 'NoParams'
 
 visualizationResultStage:
   Flow: 'NoParams'
   # This mathod always gets the last PSNR value
-  BppPSNR: 'NoParams'
+  # BppPSNR: 'NoParams'
+  BppFID: 'NoParams'

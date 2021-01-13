@@ -21,7 +21,8 @@ class Operator(ABC):
         fps = searchObj.group(3)
         return int(w), int(h), float(fps)
         
-    def generateFileName(self, w, h, fps, fmt='yuv', bpp=None, avgQP=None,PSNR=None, kbps=None):
+    def generateFileName(self, w, h, fps, fmt='yuv', bpp=None, avgQP=None,PSNR=None, kbps=None,
+                     FID=None):
         filename = '{}x{}_{}fps'.format(w, h, fps)
         if bpp is not None:
             filename += '_{}bpp'.format(bpp)
@@ -31,6 +32,8 @@ class Operator(ABC):
             filename += '_{}AvgQP'.format(avgQP)
         if PSNR is not None:
             filename += '_{}PSNR'.format(PSNR)
+        if FID is not None:
+            filename += '_{}FID'.format(FID)
         filename += '.{}'.format(fmt)
         return filename
 
