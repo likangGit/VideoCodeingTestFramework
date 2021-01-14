@@ -31,7 +31,6 @@ class PSNR(Operator):
     def calculatePSNR(self, input, reference, size):
         inputYUVs = VideoCaptureYUV(input, size)
         referenceYUVs = VideoCaptureYUV(reference, size)
-        print('ref:{}'.format(reference))
         psnr_list = []
         count = 0
         while True:

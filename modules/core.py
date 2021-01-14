@@ -22,7 +22,7 @@ class Operator(ABC):
         return int(w), int(h), float(fps)
         
     def generateFileName(self, w, h, fps, fmt='yuv', bpp=None, avgQP=None,PSNR=None, kbps=None,
-                     FID=None):
+                     FID=None, NIQE=None):
         filename = '{}x{}_{}fps'.format(w, h, fps)
         if bpp is not None:
             filename += '_{}bpp'.format(bpp)
@@ -34,6 +34,8 @@ class Operator(ABC):
             filename += '_{}PSNR'.format(PSNR)
         if FID is not None:
             filename += '_{}FID'.format(FID)
+        if NIQE is not None:
+            filename += '_{}NIQE'.format(NIQE)
         filename += '.{}'.format(fmt)
         return filename
 
