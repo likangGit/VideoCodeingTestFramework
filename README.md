@@ -75,5 +75,5 @@ visualizationResultStage:
 ## Develop
 The framework is designed to add modules in the form of plug-ins. You can add your own plugin by follwing the setps below:
 1. create a python file in path "modules/"
-2. Write your own code by imitating the code in 'frame_rate.py' or 'ffmpeg_resolution.py' and add it to the new python file
+2. Write your own code by imitating the code in 'downFrameRate.py' or 'hevc.py' and add it to the new python file
 3. add config information in config.yaml according to the code you wrote.

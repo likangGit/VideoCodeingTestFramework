@@ -43,7 +43,8 @@ class BppMetrics(Operator):
             m = float(obj.group(1))
             metric_list.append(m)
 
-        save_dict = {'bpp_list':bpp_list, 'kbps_list':kbps_list, 'metric_list':metric_list}
+        save_dict = {'bpp_list':bpp_list, 'kbps_list':kbps_list,
+                     metric_name + '_list': metric_list}
         with open(os.path.join(output, 'data.txt'), 'w') as f:
             f.write(str(save_dict))
     
@@ -58,7 +59,7 @@ class BppMetrics(Operator):
             fig, (ax1) = plt.subplots(1)
 
         bpp_list, sorted_metric_list = zip(*sorted(zip(bpp_list, metric_list)))
-        ax1.plot(bpp_list, sorted_metric_list)
+        ax1.plot(bpp_list, sorted_metric_list, 's-b')
         ax1.set_ylabel(metric_name)
         ax1.set_xlabel('bpp')
         ax1.grid()
@@ -67,7 +68,7 @@ class BppMetrics(Operator):
 
         if len(kbps_list) > 0:
             kbps_list, sorted_metric_list = zip(*sorted(zip(kbps_list, metric_list)))
-            ax2.plot(kbps_list, sorted_metric_list)
+            ax2.plot(kbps_list, sorted_metric_list, 's-b')
             ax2.set_ylabel(metric_name)
             ax2.set_xlabel('kbps')
             ax2.grid()
