@@ -9,7 +9,7 @@ downFrameRateStage:
 # 视频绛分辨率参数
 downResolutionStage: 
   FFmpeg:
-    downRate: [1]
+    downRate: [0.5]
 
 encodingStage:
   HEVC:
@@ -19,13 +19,22 @@ encodingStage:
 
   #  HLVC:
   #    lumda: [256,512,1024,2048]
+
+# In analyzerStage, we recommend that you do not use both methods at once.
+# Because different methods will produce different graphics paths.
+# But in fact, considering that the analyzerStage only makes
+# the soft symbolic to link to the input file, the latter stage
+# will actually process the same input file.
 analyzerStage0:
   PSNR:
     useDataType: 'YUV'
 
 upResolutionStage:
   USR: 'NoParams'
-
+  
+# we use pyyaml that does not allow to use same key in the same file
+# to load this config file.To solve this problem, we add a number after
+# stage name.
 analyzerStage1:
   PSNR:
     useDataType: 'YUV'
@@ -34,10 +43,10 @@ upFrameRateStage:
   DAIN: 'NoParams'
 
 analyzerStage2:
-  PSNR:
-    useDataType: 'YUV'
+  # PSNR:
+  #   useDataType: 'YUV'
   # FID: 'NoParams'
-  # NIQE: 'NoParams'
+  NIQE: 'NoParams'
 
 visualizationResultStage:
   Flow: 'NoParams'
