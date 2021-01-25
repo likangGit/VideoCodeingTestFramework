@@ -9,12 +9,14 @@ downFrameRateStage:
 # 视频绛分辨率参数
 downResolutionStage: 
   FFmpeg:
-    downRate: [0.5]
+    downRate: [1]
 
 encodingStage:
   HEVC:
-    Q: [20,30,40,50]
-    keyInterval: 10
+    crf: [15,19,23,27]
+    # keyint: 10
+    # preset: 'veryfast'
+    # tune: 'zerolatency'
     bppRef: 'input' # 'predecessor'
 
   #  HLVC:
@@ -31,7 +33,7 @@ analyzerStage0:
 
 upResolutionStage:
   USR: 'NoParams'
-  
+
 # we use pyyaml that does not allow to use same key in the same file
 # to load this config file.To solve this problem, we add a number after
 # stage name.
@@ -43,10 +45,10 @@ upFrameRateStage:
   DAIN: 'NoParams'
 
 analyzerStage2:
-  # PSNR:
-  #   useDataType: 'YUV'
+  PSNR:
+    useDataType: 'YUV'
   # FID: 'NoParams'
-  NIQE: 'NoParams'
+  # NIQE: 'NoParams'
 
 visualizationResultStage:
   Flow: 'NoParams'
