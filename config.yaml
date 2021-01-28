@@ -1,23 +1,32 @@
 # video name.it is should be like: xx/xxx_w*h_xxfps.yuv
-input: '/media/ryan/D/testVideo/FlowerKids_640x448_50fps.yuv'
+# input: '/media/ryan/D/testVideo/FlowerKids_640x448_50fps.yuv'
+input: '/media/ryan/D/Datasets/HEVC/BasketballDrill_832x480_50fps.yuv'
 outputFolder: 'results/'
 # 视频降帧参数
-downFrameRateStage:
-  BinaryFileProcess:
-    downRate: [1]
+# downFrameRateStage:
+#   BinaryFileProcess:
+#     downRate: [1]
 
 # 视频绛分辨率参数
-downResolutionStage: 
-  FFmpeg:
-    downRate: [1]
+# downResolutionStage: 
+#   FFmpeg:
+#     downRate: [1]
 
 encodingStage:
   HEVC:
-    crf: [15,19,23,27]
-    # keyint: 10
+    crf: [32]
+    keyint: 501
     # preset: 'veryfast'
-    # tune: 'zerolatency'
-    bppRef: 'input' # 'predecessor'
+    tune: 'zerolatency'
+    g: 501
+    level: 3.1
+    vframes: 501
+    # bppRef: 'predecessor'
+  # VVC:
+  #   mode: 'lowdelay_P'
+  #   crf: [32]
+  #   frames: 50
+  #   level: 3.1
 
   #  HLVC:
   #    lumda: [256,512,1024,2048]
@@ -31,22 +40,22 @@ analyzerStage0:
   PSNR:
     useDataType: 'YUV'
 
-upResolutionStage:
-  USR: 'NoParams'
+# upResolutionStage:
+#   USR: 'NoParams'
 
 # we use pyyaml that does not allow to use same key in the same file
 # to load this config file.To solve this problem, we add a number after
 # stage name.
-analyzerStage1:
-  PSNR:
-    useDataType: 'YUV'
+# analyzerStage1:
+#   PSNR:
+#     useDataType: 'YUV'
 
-upFrameRateStage:
-  DAIN: 'NoParams'
+# upFrameRateStage:
+#   DAIN: 'NoParams'
 
-analyzerStage2:
-  PSNR:
-    useDataType: 'YUV'
+# analyzerStage2:
+#   PSNR:
+#     useDataType: 'YUV'
   # FID: 'NoParams'
   # NIQE: 'NoParams'
 

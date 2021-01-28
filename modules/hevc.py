@@ -7,12 +7,16 @@ from .core import FUNCTION_REGISTER, Operator
 class HEVC(Operator):
     """reference：https://www.cnblogs.com/blackhumour2018/p/9427665.html
     """
-    def __init__(self, crf,keyint=None,preset=None, tune=None, bppRef='input'):
+    def __init__(self, crf,keyint=None,preset=None, tune=None,
+                g=None,level=None,vframes=None, bppRef='input'):
         super(HEVC, self).__init__()
         self.crf = crf
         self.keyint = keyint
         self.preset = preset
         self.tune = tune
+        self.g = g
+        self.level = level
+        self.vframes = vframes
         self.bppRef = bppRef
 
     def operate(self, input, output):
@@ -28,6 +32,9 @@ class HEVC(Operator):
         cmd = 'ffmpeg -s {}x{} -framerate {} -i {} -r {} -c:v libx265'.format(w,h, fps, input,fps)
         cmd += ' -preset '+self.preset if self.preset else ''
         cmd += ' -tune ' + self.tune if self.tune else ''
+        cmd += ' -g {}'.format(self.g) if self.g else ''
+        cmd += ' -level {}'.format(self.level) if self.level else ''
+        cmd += ' -vframes {}'.format(self.vframes) if self.vframes else ''
         cmd += ' -x265-params crf={}'.format(self.crf)
         cmd += ':keyint={}'.format(self.keyint) if self.keyint else ''
         cmd += ' {} -y -hide_banner'.format(tmp_output)
