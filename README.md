@@ -56,14 +56,31 @@ visualizationResultStage:
     ├── model_weights
     └── USRNet
     ```
-4. download model HLVC, unzip and put the folder "HLVC" into 'modules/thirdparty/':
-   [Google Drive](https://drive.google.com/file/d/1QQWeJLAx7qPQiIKQDBv67tx16o3f7hEY/view?usp=sharing)
-   [百度云盘](https://pan.baidu.com/s/1UEwrXUsbK4jggRcbx9VFbQ) 提取码:sb8g
+4. If you want to use HLVC in decoding, download pre-trained model of HLVC, unzip and put the folder "HLVC_model" into 'modules/thirdparty/HLVC/':
+   [Download link](https://drive.google.com/drive/folders/1JWRIp7RgZZEulrUfQAlbAnAkA6MAKRbE?usp=sharing)
     ```shell
-    thirdparty/
-    ├── VideoPhotoRepair
-    ├── HLVC
+    HLVC/
+    ├── CA_Entropy_Model-master
+    ├── HLVC_model
+    ├── ………………
     ```
+   And download BGP method for I frame compression: [Download link](https://bellard.org/bpg/)
+    
+   @Paper of HLVC method: [[Paper]](https://arxiv.org/abs/2003.01966).
+
+
+5. If you want to use RLVC in decoding, download pre-trained model of RLVC, unzip and put the folder "model" into 'modules/thirdparty/RLVC/':
+   [Download link](https://drive.google.com/drive/folders/1JWRIp7RgZZEulrUfQAlbAnAkA6MAKRbE?usp=sharing)
+    ```shell
+    RLVC/
+    ├── model
+    ├── RLVC.py
+    ├── ………………
+    ```
+   And download BGP method for I frame compression: [Download link](https://bellard.org/bpg/)
+    
+   @Paper of RLVC method: [[Paper]](https://arxiv.org/pdf/2006.13560.pdf).
+
 
 ## Run
 1. modify "config.yaml"  
