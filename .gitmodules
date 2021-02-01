@@ -2,9 +2,4 @@
 [submodule "modules/thirdparty/VideoPhotoRepair"]
 	path = modules/thirdparty/VideoPhotoRepair
 	url = https://gitee.com/likangGit/VideoPhotoRepair.git
-[submodule "modules/thirdparty/RLVC"]
-	path = modules/thirdparty/RLVC
-	url = https://github.com/ZetaJ7/RLVC.git
-[submodule "modules/thirdparty/HLVC"]
-	path = modules/thirdparty/HLVC
-	url = https://github.com/ZetaJ7/HLVC.git
+
