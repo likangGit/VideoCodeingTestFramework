@@ -1,6 +1,6 @@
 # video name.it is should be like: xx/xxx_w*h_xxfps.yuv
-# input: '/media/ryan/D/testVideo/FlowerKids_640x448_50fps.yuv'
-input: '/media/ryan/D/Datasets/HEVC/BasketballDrill_832x480_50fps.yuv'
+input: '/media/ryan/D/testVideo/RaceNight_1920x1080_50fps_8bit.yuv'
+# input: '/media/ryan/D/Datasets/HEVC/BasketballDrill_832x480_50fps.yuv'
 outputFolder: 'results/'
 # 视频降帧参数
 # downFrameRateStage:
@@ -14,17 +14,18 @@ outputFolder: 'results/'
 
 encodingStage:
   HEVC:
-    crf: [32]
-    keyint: 501
-    # preset: 'veryfast'
+    crf: [20,25,32,40]
+    keyint: 50
+    preset: 'medium'
     tune: 'zerolatency'
-    g: 501
+    g: 50
     level: 3.1
-    vframes: 501
-    # bppRef: 'predecessor'
+    vframes: 50
+    bppRef: 'input' #'predecessor'
+
   # VVC:
+  #   crf: [20,25,32,40]
   #   mode: 'lowdelay_P'
-  #   crf: [32]
   #   frames: 50
   #   level: 3.1
 
