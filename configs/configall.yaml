@@ -3,14 +3,14 @@ input: '/media/ryan/D/testVideo/RaceNight_1920x1080_50fps_8bit.yuv'
 # input: '/media/ryan/D/Datasets/HEVC/BasketballDrill_832x480_50fps.yuv'
 outputFolder: 'results/'
 # 视频降帧参数
-# downFrameRateStage:
-#   BinaryFileProcess:
-#     downRate: [1]
+downFrameRateStage:
+  BinaryFileProcess:
+    downRate: [1]
 
 # 视频绛分辨率参数
-# downResolutionStage: 
-#   FFmpeg:
-#     downRate: [1]
+downResolutionStage: 
+  FFmpeg:
+    downRate: [1]
 
 encodingStage:
   HEVC:
@@ -42,22 +42,22 @@ analyzerStage0:
   PSNR:
     useDataType: 'YUV'
 
-# upResolutionStage:
-#   USR: 'NoParams'
+upResolutionStage:
+  USR: 'NoParams'
 
 # we use pyyaml that does not allow to use same key in the same file
 # to load this config file.To solve this problem, we add a number after
 # stage name.
-# analyzerStage1:
-#   PSNR:
-#     useDataType: 'YUV'
+analyzerStage1:
+  PSNR:
+    useDataType: 'YUV'
 
-# upFrameRateStage:
-#   DAIN: 'NoParams'
+upFrameRateStage:
+  DAIN: 'NoParams'
 
-# analyzerStage2:
-#   PSNR:
-#     useDataType: 'YUV'
+analyzerStage2:
+  PSNR:
+    useDataType: 'YUV'
   # FID: 'NoParams'
   # NIQE: 'NoParams'
 

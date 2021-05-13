@@ -1,0 +1,30 @@
+# video name.it is should be like: xx/xxx_w*h_xxfps.yuv
+input: '/media/ryan/D/testVideo/RaceNight_1920x1080_50fps_8bit.yuv'
+# input: '/media/ryan/D/Datasets/HEVC/BasketballDrill_832x480_50fps.yuv'
+outputFolder: 'results/'
+
+encodingStage:
+  HEVC:
+    crf: [20,25,32,40]
+    codec: 'hevc_nvenc' #'libx265'
+    keyint: 50
+    # preset: 'medium'
+    # tune: 'zerolatency'
+    g: 50
+    # level: 3.1
+    vframes: 50
+    bppRef: 'input'
+
+# In analyzerStage, we recommend that you do not use both methods at once.
+# Because different methods will produce different graphics paths.
+# But in fact, considering that the analyzerStage only makes
+# the soft symbolic to link to the input file, the latter stage
+# will actually process the same input file.
+analyzerStage0:
+  PSNR:
+    useDataType: 'YUV'
+
+visualizationResultStage:
+  Flow: 'NoParams'
+  # This mathod always gets the last PSNR value
+  BppMetrics: 'NoParams'
