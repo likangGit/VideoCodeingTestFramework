@@ -114,9 +114,9 @@ def Exec(config):
                     theFile = None
                     for f in fs:
                         f = os.path.join(output_path, f)
-                        if os.path.isfile(f):
+                        if os.path.isfile(f) and f.endswith('yuv'):
                             theFile = f
-                            break # there is only one file in this directory.
+                            break # there is only one yuv file in this directory.
                     if theFile:
                         already_outputs.append(theFile)
                         continue

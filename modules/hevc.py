@@ -92,7 +92,7 @@ class HEVC(Operator):
         output = os.path.join(output,newFileName)
         cmd = 'ffmpeg -i {} {} -hide_banner'.format(tmp_output, output)
         os.system(cmd)
-        os.remove(tmp_output)
+        # os.remove(tmp_output)
         print('HEVC finish:{}'.format(output))
         return output
     
