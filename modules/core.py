@@ -40,11 +40,13 @@ class Operator(ABC):
         return filename
 
 REGISTER = {}
-def FUNCTION_REGISTER(stageName, methodName, methodClass, useMultiProcessing=True):
+def FUNCTION_REGISTER(stageName, methodName, methodClass, useMultiProcessing=True, gpuCapability=None):
     if stageName in REGISTER:
-        REGISTER[stageName].update({methodName:{'class': methodClass, 'useMP':useMultiProcessing} })
+        REGISTER[stageName].update({methodName:{'class': methodClass, 'useMP':useMultiProcessing,
+                                                 'gpuCapability':gpuCapability} })
     else:
-        REGISTER.update({stageName:{methodName: {'class':methodClass, 'useMP':useMultiProcessing} } })
+        REGISTER.update({stageName:{methodName: {'class':methodClass, 'useMP':useMultiProcessing,
+                                                'gpuCapability':gpuCapability} } })
 
 
 def parseParameters(inputs, parameters):
@@ -90,7 +92,9 @@ def Exec(config):
             methodClass = stage[methodName]['class']
             methodUseMP = stage[methodName]['useMP']
             #每个method使用线程池，不清楚线程是close是否还能再open，所以每次重新申请
-            pool = multiprocessing.Pool(processes=cpu_count())
+            gpuCapability = stage[methodName]['gpuCapability']
+            pool_num = min(cpu_count(), gpuCapability) if gpuCapability else cpu_count()
+            pool = multiprocessing.Pool(processes=pool_num)
             method_outputs = []
             already_outputs = []
             for param in methodParams:
@@ -102,9 +106,9 @@ def Exec(config):
                 for pk,pv in param.items():
                     output_folder += '_'.join([pk, str(pv)])+'_'
                 output_folder = output_folder[:-1]
-
                 output_path = os.path.join(os.path.dirname(input_file), output_folder)
-                #TODO: if output_path already has a file, we can skip this instance
+                
+                #if output_path already has a file, we can skip this instance
                 if os.path.exists(output_path):
                     fs = os.listdir(output_path)
                     theFile = None

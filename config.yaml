@@ -15,11 +15,12 @@ outputFolder: 'results/'
 encodingStage:
   HEVC:
     crf: [20,25,32,40]
+    codec: 'hevc_nvenc' #'libx265'
     keyint: 50
-    preset: 'medium'
-    tune: 'zerolatency'
+    # preset: 'medium'
+    # tune: 'zerolatency'
     g: 50
-    level: 3.1
+    # level: 3.1
     vframes: 50
     bppRef: 'input' #'predecessor'
 
