@@ -1,15 +1,16 @@
 # video name.it is should be like: xx/xxx_w*h_xxfps.yuv
-input: '/media/ryan/D/testVideo/RaceNight_1920x1080_50fps_8bit.yuv'
-# input: '/media/ryan/D/Datasets/HEVC/BasketballDrill_832x480_50fps.yuv'
+input: '/media/ryan/D/testVideo/11221_1920x1080_25fps_8bit.yuv'
+# input: '/media/ryan/D/Datasets/cannotcompression/1_1920x1080_25fps.yuv'
 outputFolder: 'results/'
 
 encodingStage:
   HEVC_NVENC:
-    # cq: [14,20,26,38,41,44,47,50]
-    cq: [20,25,32,40,46,51]
+    cq: [14,20,26,32,40,43,46,49,51]
+    # qmin: [10,20,30,40,50,60,69]
+    # qmax: [10,200,400,600,800,1000]
     keyint_min: 50
     g: 50
-    vframes: 50
+    vframes: 500
     bppRef: 'input'
 
 # In analyzerStage, we recommend that you do not use both methods at once.

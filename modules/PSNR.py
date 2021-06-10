@@ -49,6 +49,7 @@ class PSNR(Operator):
             if not retSrc:
                 break
             psnr_list.append(cv2.PSNR(imgSrc, imgRef) )
+        print('')
         return np.mean(psnr_list)
 
 

@@ -9,13 +9,16 @@ def getMetricName(dataDict):
             return n
 
 label_file = {
-    'R0.5_Q*':'results/FlowerKids_640x448_50fps.yuv/niqe_r0.5_q20_50/BppMetrics/data.txt',
-    'Q*':'results/FlowerKids_640x448_50fps.yuv/niqe_q20_50/BppMetrics/data.txt',
+    'NVENC50gop': 'results/11221_1920x1080_25fps_8bit.yuv/nvenc_cq_gop50/BppMetrics/data.txt',
+    'NVENC100gop':'results/11221_1920x1080_25fps_8bit.yuv/nvenc_cq_gop100/BppMetrics/data.txt',
+    'NVENC250gop':'results/11221_1920x1080_25fps_8bit.yuv/nvenc_cq_gop250/BppMetrics/data.txt',
+    'NVENC500gop':'results/11221_1920x1080_25fps_8bit.yuv/nvenc_cq_gop500/BppMetrics/data.txt',
+    
     }
 fig, (ax1, ax2) = plt.subplots(1,2,figsize=(20,5))
 ax1.grid(True)
 ax2.grid(True)
-line_type = ['s-b','v--g','o-.r','d-m','h-.k']
+line_type = ['s-b','v--g','o-.r','d-m','h-.k','o-r']
 for (label,data), lt in zip(label_file.items(), line_type):
 
     with open(data, 'r') as f:

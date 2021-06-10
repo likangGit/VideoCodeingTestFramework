@@ -7,10 +7,12 @@ from .core import FUNCTION_REGISTER, Operator
 class HEVC_NVENC(Operator):
     """reference：https://www.cnblogs.com/blackhumour2018/p/9427665.html
     """
-    def __init__(self, cq=None,keyint_min=None,
+    def __init__(self, cq=None,qmin=None, qmax=None,keyint_min=None,
                 g=None,vframes=None, bppRef='input'):
         super(HEVC_NVENC, self).__init__()
         self.cq = cq
+        self.qmin = qmin
+        self.qmax = qmax
         self.keyint = keyint_min
         self.g = g
         self.vframes = vframes
@@ -30,21 +32,22 @@ class HEVC_NVENC(Operator):
         cmd += ' -g {}'.format(self.g) if self.g else ''
         cmd += ' -vframes {}'.format(self.vframes) if self.vframes else ''
         cmd += ' -cq {}'.format(self.cq) if self.cq else ''
+        cmd += ' -qmin {}'.format(self.qmin) if self.qmin else ''
+        cmd += ' -qmax {}'.format(self.qmax) if self.qmax else ''
         cmd += ' -keyint_min {}'.format(self.keyint) if self.keyint else ''
         cmd += ' {} -y -hide_banner'.format(tmp_output)
 
         # print(cmd)
         
         p = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding='utf-8')
-        line_queue = deque(maxlen=2)
         while p.poll() is None:
             line = p.stdout.readline().rstrip()
-            line_queue.append(line)
             end = '\r' if (('frame=' in line) and ('fps=' in line) and ('time=' in line)) else '\n'
             print(line, end=end)
-        inform = line_queue.popleft()
+        p.wait()
+      
  
-        frames = os.path.getsize(input) / (w*h*3/2)
+        frames = self.vframes if self.vframes else os.path.getsize(input) / (w*h*3/2)
         kbps = os.path.getsize(tmp_output) * 8 / frames * fps / 1024.0
         kbps = round(kbps, 4)
         if self.bppRef == 'predecessor':
